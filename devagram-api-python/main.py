@@ -1,29 +1,17 @@
 from fastapi import FastAPI
 from typing import Optional
 from pydantic import BaseModel
+from routes.UserRoute import router as UserRoute
 
-
-class User(BaseModel):
-    name: str
-    email: str
-    password: str
-    description: Optional[str] = None
 
 
 app = FastAPI()
 
-@app.get('/health')
+app.include_router(UserRoute, tags=['User'], prefix='/api/user')
+
+
+@app.get('/api/health', tags=['Health'])
 async def health():
     return {
         'status': '200 OK'
     }
-
-
-@app.post('/login')
-async def login(user:User):
-    if user.email == 'xx' and user.password == 'yy':
-        # return {
-        #     'status': 'Login successfully realized.'
-        # }
-
-        return 'Login successfully realized.'
